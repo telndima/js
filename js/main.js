@@ -1,7 +1,7 @@
 
 var app = {
 	init: function(){
-		this.testForm();		
+		this.loginForm();		
 	},
 
 	loginForm: function(){
@@ -38,14 +38,14 @@ var app = {
 			{
 				label: 'Вопрос 2',				
 				type: 'checkbox',
-				name: ['q1','q2'],
-				data: 'q2'
+				name: ['q4','q5'],
+				data: 'q4'
 			},
 			{
 				label: 'Вопрос 3',				
 				type: 'checkbox',
-				name: ['q1','q2','q3','q4'],
-				data: 'q3'
+				name: ['q6','q7','q8','q9'],
+				data: 'q6'
 			},	
 			{
 				type: 'submit',
@@ -56,6 +56,19 @@ var app = {
 		this.bindEventTest();
 	},
 
+	createNewElement: function(newTag, newClass, newID, newInnerHtml, newAttrVal, newAttrPar){
+		var newBlock = document.createElement(newTag);
+		if (newClass)
+			newBlock.className = newClass;
+		if (newID)
+			newBlock.id = newID;
+		if (newInnerHtml)
+			newBlock.innerHTML = newInnerHtml;
+		if (newAttrVal && newAttrPar)
+			newBlock.setAttribute(newAttrVal,newAttrPar);
+		return newBlock;
+	},	
+
 	buildForm: function(){
 		var loginForm = document.querySelector('.form');
 
@@ -64,7 +77,12 @@ var app = {
 
 			if(loginData[i].type == 'text'){
 				div.setAttribute('class', 'form-group');
-				div.innerHTML = '<label for="'+loginData[i].name+'" class="col-sm-4 control-label">'+loginData[i].label+'</label><div class="col-sm-8"><input type="'+loginData[i].name+'" name="'+loginData[i].name+'" id="'+loginData[i].name+'" class="form-control"></div>';				
+
+				var create = app.createNewElement('label','col-sm-4 control-label','',loginData[i].label,'for',loginData[i].name);
+				console.log(div);
+				div.appendChild(create);
+
+				div.innerHTML = '<div class="col-sm-8"><input type="'+loginData[i].name+'" name="'+loginData[i].name+'" id="'+loginData[i].name+'" class="form-control"></div>';				
 			} else if(loginData[i].type == 'submit'){
 				div.setAttribute('class', 'form-group');
 				div.innerHTML = '<div class="col-sm-offset-8 col-sm-1">';
