@@ -1,7 +1,7 @@
 
 var app = {
 	init: function(){
-		this.loginForm();		
+		this.testForm();		
 	},
 
 	loginForm: function(){
@@ -56,17 +56,19 @@ var app = {
 		this.bindEventTest();
 	},
 
-	createNewElement: function(newTag, newClass, newID, newInnerHtml, newAttrVal, newAttrPar){
-		var newBlock = document.createElement(newTag);
-		if (newClass)
-			newBlock.className = newClass;
-		if (newID)
-			newBlock.id = newID;
-		if (newInnerHtml)
-			newBlock.innerHTML = newInnerHtml;
-		if (newAttrVal && newAttrPar)
-			newBlock.setAttribute(newAttrVal,newAttrPar);
-		return newBlock;
+	createNewElement: function(blockPlace, blockTag, blockClass, blockID, blockInnerHtml, blockAttrVal, blockAttrPar, blockValue){
+		var newBlock = document.createElement(blockTag);
+		if (blockClass)
+			newBlock.className = blockClass;
+		if (blockID)
+			newBlock.id = blockID;
+		if (blockInnerHtml)
+			newBlock.innerHTML = blockInnerHtml;
+		if (blockAttrVal && blockAttrPar)
+			newBlock.setAttribute(blockAttrVal,blockAttrPar);
+		if (blockValue)
+			newBlock.setAttribute('value',blockValue);
+		blockPlace.appendChild(newBlock);
 	},	
 
 	buildForm: function(){
@@ -77,26 +79,36 @@ var app = {
 
 			if(loginData[i].type == 'text'){
 				div.setAttribute('class', 'form-group');
-
-				var create = app.createNewElement('label','col-sm-4 control-label','',loginData[i].label,'for',loginData[i].name);
-				console.log(div);
-				div.appendChild(create);
-
-				div.innerHTML = '<div class="col-sm-8"><input type="'+loginData[i].name+'" name="'+loginData[i].name+'" id="'+loginData[i].name+'" class="form-control"></div>';				
+				loginForm.appendChild(div);			
+				app.createNewElement(div,'label','col-sm-4 control-label','',loginData[i].label,'for',loginData[i].name,'');
+				app.createNewElement(div,'div','col-sm-8','','','','','');
+				var parentBlock = document.getElementsByClassName('col-sm-8');
+				app.createNewElement(parentBlock[i],'input','form-control',loginData[i].name,'','type',loginData[i].name,'');
 			} else if(loginData[i].type == 'submit'){
 				div.setAttribute('class', 'form-group');
-				div.innerHTML = '<div class="col-sm-offset-8 col-sm-1">';
-				div.innerHTML += '<input type="'+loginData[i].type+'" value="'+loginData[i].value+'" class="btn btn-primary">';
-				div.innerHTML += '</div>';
+				loginForm.appendChild(div);
+				app.createNewElement(div,'div','col-sm-offset-8 col-sm-1','','','','','');
+				var parentBlock = document.getElementsByClassName('col-sm-offset-8');
+				app.createNewElement(parentBlock[0],'input','btn btn-primary','','','type',loginData[i].type,loginData[i].value);
 			} else if(loginData[i].type == 'checkbox'){
+
 				div.setAttribute('class', 'form-group question-'+(i+1));
-				div.innerHTML = '<div class="col-sm-offset-5"><h4>'+(i+1)+'. Вопрос №'+(i+1)+'</h4><div class="questions">';
-				for (var j = 0; j < loginData[i].name.length; j++) {					
-					div.innerHTML += '<input type="checkbox" name="checkbox_q'+(j+1)+'" id="q'+(j+1)+'" value="q'+(j+1)+'">Ответ '+(j+1)+'<br>';
-				}				
-				div.innerHTML += '</div></div>';
+				loginForm.appendChild(div);			
+				app.createNewElement(div,'div','col-sm-offset-5','','','','','');
+				var parentBlock1 = document.getElementsByClassName('col-sm-offset-5');
+				
+				app.createNewElement(parentBlock1[i],'h4','','',(i+1)+". "+loginData[i].label,'','','');
+
+				app.createNewElement(parentBlock1[i],'div','questions','','','','','');
+
+				var parentBlock2 = document.getElementsByClassName('questions');
+
+				for (var j = 0; j < loginData[i].name.length; j++) {	
+					app.createNewElement(parentBlock2[i],'input','form-control',loginData[i].name[j],'','type','checkbox',loginData[i].name[j]);				
+					app.createNewElement(parentBlock2[i],'span','','',loginData[i].name[j],'','','');				
+				}	
 			}
-			loginForm.appendChild(div);
+			
 		};
 	},	
 
