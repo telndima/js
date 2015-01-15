@@ -1,7 +1,7 @@
 
 var app = {
 	init: function(){
-		this.loginForm();		
+		this.testForm();		
 	},
 
 	loginForm: function(){
@@ -80,29 +80,24 @@ var app = {
 			if(loginData[i].type == 'text'){
 				div.setAttribute('class', 'form-group');
 				loginForm.appendChild(div);			
-				app.createNewElement(div,'label','col-sm-4 control-label','',loginData[i].label,'for',loginData[i].name,'');
-				app.createNewElement(div,'div','col-sm-8','','','','','');
-				var parentBlock = document.getElementsByClassName('col-sm-8');
+				app.createNewElement(div,'label','col-md-4 control-label','',loginData[i].label,'for',loginData[i].name,'');
+				app.createNewElement(div,'div','col-md-6','','','','','');
+				var parentBlock = document.getElementsByClassName('col-md-6');
 				app.createNewElement(parentBlock[i],'input','form-control',loginData[i].name,'','type',loginData[i].name,'');
 			} else if(loginData[i].type == 'submit'){
 				div.setAttribute('class', 'form-group');
 				loginForm.appendChild(div);
-				app.createNewElement(div,'div','col-sm-offset-8 col-sm-1','','','','','');
+				app.createNewElement(div,'div','col-sm-offset-8 col-md-1','','','','','');
 				var parentBlock = document.getElementsByClassName('col-sm-offset-8');
 				app.createNewElement(parentBlock[0],'input','btn btn-primary','','','type',loginData[i].type,loginData[i].value);
 			} else if(loginData[i].type == 'checkbox'){
-
 				div.setAttribute('class', 'form-group question-'+(i+1));
 				loginForm.appendChild(div);			
-				app.createNewElement(div,'div','col-sm-offset-5','','','','','');
-				var parentBlock1 = document.getElementsByClassName('col-sm-offset-5');
-				
+				app.createNewElement(div,'div','col-sm-offset-2 col-md-10','','','','','');
+				var parentBlock1 = document.getElementsByClassName('col-sm-offset-2');				
 				app.createNewElement(parentBlock1[i],'h4','','',(i+1)+". "+loginData[i].label,'','','');
-
-				app.createNewElement(parentBlock1[i],'div','questions','','','','','');
-
+				app.createNewElement(parentBlock1[i],'div','questions col-md-12','','','','','');
 				var parentBlock2 = document.getElementsByClassName('questions');
-
 				for (var j = 0; j < loginData[i].name.length; j++) {	
 					app.createNewElement(parentBlock2[i],'input','form-control',loginData[i].name[j],'','type','checkbox',loginData[i].name[j]);				
 					app.createNewElement(parentBlock2[i],'span','','',loginData[i].name[j],'','','');				
