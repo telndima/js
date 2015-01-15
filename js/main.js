@@ -1,7 +1,7 @@
 
 var app = {
 	init: function(){
-		this.testForm();		
+		this.loginForm();		
 	},
 
 	loginForm: function(){
