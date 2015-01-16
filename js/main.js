@@ -45,7 +45,7 @@ var app = {
 				label: 'Вопрос 3',				
 				type: 'checkbox',
 				name: ['q6','q7','q8','q9'],
-				data: 'q6'
+				data: ['q6','q9']
 			},	
 			{
 				type: 'submit',
@@ -101,14 +101,13 @@ var app = {
 				loginForm.appendChild(div);					
 				app.createNewElement(div,'h4','','',(i+1)+". "+loginData[i].label,'','','');
 				var parentBlock = document.querySelector('.question-'+(i+1));
-				console.log(parentBlock);
 				
 				for (var j = 0; j < loginData[i].name.length; j++) {	
 					app.createNewElement(div,'div','col-md-12 checkbox answer-'+(j+1),'','','','','');
 					var childBlock = parentBlock.querySelector('.answer-'+(j+1));
 					app.createNewElement(childBlock,'label','answer-label','','','',loginData[i].name[j],'');	
 					var labelBlock = childBlock.getElementsByClassName('answer-label');					
-					app.createNewElement(labelBlock['0'],'input','',loginData[i].name[j],'','type','checkbox',loginData[i].name[j]);
+					app.createNewElement(labelBlock['0'],'input','input','checkbox','','type','checkbox',loginData[i].name[j]);
 					var t = document.createTextNode(loginData[i].name[j]);
 
 					labelBlock['0'].appendChild(t);
@@ -132,33 +131,64 @@ var app = {
 		event.preventDefault();
 
 		for (var i = 0; i < loginData.length-1; i++) {	
-
-			for (var j = 0; j < loginData[i].name.length; j++) {					
-				var checkedValue = document.getElementById('q'+(j));
-				/*if (checkedValue.checked){
-					console.log('yes');
-				} else {
-					console.log('no');
-				}	*/
-				//console.log(checkedValue);
-				if(checkedValue.checked){
-					console.log('yes'+j);
+					
+			var parentBlock = document.querySelector('.question-'+(i+1));
+			var checkboxes = parentBlock.getElementsByTagName('input');
+			var checkboxesChecked = [];
+			
+			//add checked checkboxes to array
+			for (var j=0; j<checkboxes.length; j++) {					 
+				if (checkboxes[j].checked) {
+					checkboxesChecked.push(checkboxes[j].value);
 				}
 			}
 
-			/*var checkedValue = document.getElementById('q'+(i+1));
-			if (checkedValue.checked){
-				checkedValue.style["color"] = "green";
+			//check if true answers - is array
+			if(loginData[i].data instanceof Array && checkboxesChecked instanceof Array){
+				var is_same = (checkboxesChecked.length == loginData[i].data.length) && checkboxesChecked.every(function(element, index) {
+				    return element === loginData[i].data[index]; 
+				});
+				console.log(is_same);
+
 			} else {
-				checkedValue.style["color"] = "red";
+				console.log('single');
+				var childBlock = parentBlock.querySelector('.checkbox');
+				if (checkboxesChecked['0'] == loginData[i].data){					
+					console.log(checkboxesChecked);
+					childBlock.setAttribute('class', 'has-success col-md-12 checkbox answer-'+(j+1));
+				} else {
+					childBlock.setAttribute('class', 'has-error col-md-12 checkbox answer-'+(j+1));
+
+					
+					var childBlocks = parentBlock.getElementsByTagName('div');
+					
+
+
+					for (var j = 0; j < childBlocks.length; j++) {
+						
+						/*if(childBlocks.value == checkboxesChecked['0']){
+							childBlocks.setAttribute('class', 'has-error col-md-12 checkbox answer-'+(j+1));
+						} else {
+
+						}*/
+					}
+
+/*
+
+					for (var j = 0; j < loginData[i].name.length; j++) {
+						var checkbox = '.answer-'+(j+1);
+						var childBlock = parentBlock.querySelector('.answer-'+(j+1));
+						//console.log(childBlock);
+						childBlock.setAttribute('class', 'has-error col-md-12 checkbox answer-'+(j+1));
+					}*/
+					
+				}
+
 			}
 
-			var checkedValue = document.querySelector('.q'+(i+1)+':checked').value;
-			if(checkedValue === loginData[i].data){
-				checkedValue.style["color"] = "green";
-			} else {
-				checkedValue.style["color"] = "red";
-			}*/
+					
+
+
 		}
 	},
 
