@@ -96,13 +96,17 @@ var app = {
 
             } else if (loginData[i].type == 'checkbox') {
 
-                div.setAttribute('class', 'col-md-12 question-' + (i + 1));
+                div.setAttribute('class', 'panel panel-info question-' + (i + 1));
                 loginForm.appendChild(div);
-                this.createNewElement(div, 'h4', '', '', (i + 1) + ". " + loginData[i].label, '', '', '');
+                this.createNewElement(div, 'div', 'panel-heading', '', (i + 1) + ". " + loginData[i].label, '', '', '');
+                this.createNewElement(div, 'div', 'panel-body panel-question-' + (i + 1), '', '', '', '', '');
+                var PanelParentBlock = document.querySelector('.panel-question-' + (i + 1));
                 var parentBlock = document.querySelector('.question-' + (i + 1));
 
+
+
                 for (var j = 0; j < loginData[i].name.length; j++) {
-                    this.createNewElement(div, 'div', 'col-md-12 checkbox answer-' + (j + 1), '', '', '', '', '');
+                    this.createNewElement(PanelParentBlock, 'div', 'col-md-12 checkbox answer-' + (j + 1), '', '', '', '', '');
                     var childBlock = parentBlock.querySelector('.answer-' + (j + 1));
                     this.createNewElement(childBlock, 'label', 'answer-label', '', '', '', loginData[i].name[j], '');
                     var labelBlock = childBlock.getElementsByClassName('answer-label');
@@ -144,65 +148,74 @@ var app = {
                 }
             }
 
-            //check if true answers - is array
-            if (loginData[i].data instanceof Array) {
-                //few answers
-                var is_same = (checkboxesChecked.length == loginData[i].data.length) && checkboxesChecked.every(function (element, index) {
-                        return element === loginData[i].data[index];
-                    });
-                if (is_same) {
-                    //true
-                    for (var k = 0; k < checkboxesChecked.length; k++) {
-                        var inputs = document.querySelectorAll('input[value="' + loginData[i].data[k] + '"]');
-                        var label = inputs['0'].parentNode;
-                        var div = label.parentNode;
-                        div.setAttribute('class', 'has-success col-md-12 checkbox');
-                    }
-                } else {
-                    //false
-                    for (var j = 0; j < checkboxesChecked.length; j++) {
-                        var input = document.querySelectorAll('input[value="' + checkboxesChecked[j] + '"]');
-                        var label = input['0'].parentNode;
-                        var div = label.parentNode;
-                        div.setAttribute('class', 'has-error col-md-12 checkbox');
-                    }
-                    for (var k = 0; k < loginData[i].data.length; k++) {
-                        var inputs = document.querySelectorAll('input[value="' + loginData[i].data[k] + '"]');
-                        var label = inputs['0'].parentNode;
-                        var div = label.parentNode;
-                        div.setAttribute('class', 'has-success col-md-12 checkbox');
-                    }
-
-                }
-
+            if(checkboxesChecked.length == 0){
+                parentBlock.setAttribute('class', 'panel panel-warning question-' + (i + 1));
             } else {
-                //one answer
+                //check if true answers - is array
 
-                if (checkboxesChecked.length == 1 && checkboxesChecked['0'] == loginData[i].data) {
-                    //true
+                if (loginData[i].data instanceof Array) {
+                    //few answers
+                    var is_same = (checkboxesChecked.length == loginData[i].data.length) && checkboxesChecked.every(function (element, index) {
+                            return element === loginData[i].data[index];
+                        });
+                    if (is_same) {
+                        //true
+                        parentBlock.setAttribute('class', 'panel panel-success question-' + (i + 1));
+                        for (var k = 0; k < checkboxesChecked.length; k++) {
+                            var inputs = document.querySelectorAll('input[value="' + loginData[i].data[k] + '"]');
+                            var label = inputs['0'].parentNode;
+                            var div = label.parentNode;
+                            div.setAttribute('class', 'has-success col-md-12 checkbox');
+                        }
+                    } else {
+                        //false
+                        parentBlock.setAttribute('class', 'panel panel-danger question-' + (i + 1));
+                        for (var j = 0; j < checkboxesChecked.length; j++) {
+                            var input = document.querySelectorAll('input[value="' + checkboxesChecked[j] + '"]');
+                            var label = input['0'].parentNode;
+                            var div = label.parentNode;
+                            div.setAttribute('class', 'has-error col-md-12 checkbox');
+                        }
+                        for (var k = 0; k < loginData[i].data.length; k++) {
+                            var inputs = document.querySelectorAll('input[value="' + loginData[i].data[k] + '"]');
+                            var label = inputs['0'].parentNode;
+                            var div = label.parentNode;
+                            div.setAttribute('class', 'has-success col-md-12 checkbox');
+                        }
 
-                    var inputs = document.querySelectorAll('input[value="' + checkboxesChecked['0'] + '"]');
-                    var label = inputs['0'].parentNode;
-                    var div = label.parentNode;
-                    div.setAttribute('class', 'has-success col-md-12 checkbox');
-
-                } else {
-                    //false
-
-                    for (var j = 0; j < checkboxesChecked.length; j++) {
-                        var input = document.querySelectorAll('input[value="' + checkboxesChecked[j] + '"]');
-                        var label = input['0'].parentNode;
-                        var div = label.parentNode;
-                        div.setAttribute('class', 'has-error col-md-12 checkbox');
                     }
 
-                    var inputs = document.querySelectorAll('input[value="' + loginData[i].data + '"]');
-                    var label = inputs['0'].parentNode;
-                    var div = label.parentNode;
-                    div.setAttribute('class', 'has-success col-md-12 checkbox');
-                }
+                } else {
+                    //one answer
 
+                    if (checkboxesChecked.length == 1 && checkboxesChecked['0'] == loginData[i].data) {
+                        //true
+                        parentBlock.setAttribute('class', 'panel panel-success question-' + (i + 1));
+                        var inputs = document.querySelectorAll('input[value="' + checkboxesChecked['0'] + '"]');
+                        var label = inputs['0'].parentNode;
+                        var div = label.parentNode;
+                        div.setAttribute('class', 'has-success col-md-12 checkbox');
+
+                    } else {
+                        //false
+                        parentBlock.setAttribute('class', 'panel panel-danger question-' + (i + 1));
+                        for (var j = 0; j < checkboxesChecked.length; j++) {
+                            var input = document.querySelectorAll('input[value="' + checkboxesChecked[j] + '"]');
+                            var label = input['0'].parentNode;
+                            var div = label.parentNode;
+                            div.setAttribute('class', 'has-error col-md-12 checkbox');
+                        }
+
+                        var inputs = document.querySelectorAll('input[value="' + loginData[i].data + '"]');
+                        var label = inputs['0'].parentNode;
+                        var div = label.parentNode;
+                        div.setAttribute('class', 'has-success col-md-12 checkbox');
+                    }
+
+                } 
             }
+
+            
 
 
         }
