@@ -1,6 +1,6 @@
 var app = {
     init: function () {
-        this.loginForm();
+        this.testForm();
     },
 
     loginForm: function () {
@@ -71,7 +71,9 @@ var app = {
     },
 
     buildForm: function () {
-        var loginForm = document.querySelector('.form');
+        var loginForm = document.querySelector('.form');     
+        
+
 
         for (var i = 0; i < loginData.length; i++) {
             var div = document.createElement('div');
@@ -119,7 +121,10 @@ var app = {
 
 
         }
-        ;
+
+        //for error message
+        this.createNewElement(loginForm, 'div', 'message', '', '', '', '', '');
+
     },
 
     bindEventLogin: function () {
@@ -134,6 +139,7 @@ var app = {
 
     checkTest: function (event) {
         event.preventDefault();
+        var result = {success:0,danger:0};
 
         for (var i = 0; i < loginData.length - 1; i++) {
 
@@ -150,9 +156,11 @@ var app = {
 
             if(checkboxesChecked.length == 0){
                 parentBlock.setAttribute('class', 'panel panel-warning question-' + (i + 1));
+                result.warning = 1;
             } else {
                 //check if true answers - is array
-
+                result.warning = 0;
+                
                 if (loginData[i].data instanceof Array) {
                     //few answers
                     var is_same = (checkboxesChecked.length == loginData[i].data.length) && checkboxesChecked.every(function (element, index) {
@@ -167,6 +175,7 @@ var app = {
                             var div = label.parentNode;
                             div.setAttribute('class', 'has-success col-md-12 checkbox');
                         }
+                        result.success++;
                     } else {
                         //false
                         parentBlock.setAttribute('class', 'panel panel-danger question-' + (i + 1));
@@ -182,7 +191,7 @@ var app = {
                             var div = label.parentNode;
                             div.setAttribute('class', 'has-success col-md-12 checkbox');
                         }
-
+                        result.danger++;
                     }
 
                 } else {
@@ -195,7 +204,7 @@ var app = {
                         var label = inputs['0'].parentNode;
                         var div = label.parentNode;
                         div.setAttribute('class', 'has-success col-md-12 checkbox');
-
+                        result.success++;
                     } else {
                         //false
                         parentBlock.setAttribute('class', 'panel panel-danger question-' + (i + 1));
@@ -210,6 +219,7 @@ var app = {
                         var label = inputs['0'].parentNode;
                         var div = label.parentNode;
                         div.setAttribute('class', 'has-success col-md-12 checkbox');
+                        result.danger++;
                     }
 
                 } 
@@ -219,6 +229,18 @@ var app = {
 
 
         }
+        console.log(result.warning);
+        var messageBlock = document.querySelector('.message');
+        if(result.warning == 1){
+            messageBlock.setAttribute('class', 'message alert alert-warning');
+            message = "Пожалуйста, выберите варианты ответов";
+            messageBlock.innerHTML = message;
+        } else {
+            messageBlock.setAttribute('class', 'message alert alert-info');
+            var message = 'Ваш результат: Ошибок: '+result.danger+'. Правильных ответов: '+result.success;
+            messageBlock.innerHTML = message;
+        }
+        
     },
 
     checkUser: function (event) {
