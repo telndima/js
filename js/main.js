@@ -229,7 +229,8 @@ var app = {
 
 
         }
-        console.log(result.warning+" "+(loginData.length - 1));
+        
+        // Error message
         var messageBlock = document.querySelector('.message');
         if(result.warning == 0){
             messageBlock.setAttribute('class', 'message alert alert-info');
