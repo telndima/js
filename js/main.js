@@ -92,9 +92,9 @@ var app = {
 
                 div.setAttribute('class', 'form-group');
                 loginForm.appendChild(div);
-                this.createNewElement(div, 'div', 'col-sm-offset-8 col-md-1', '', '', '', '', '');
-                var parentBlock = document.getElementsByClassName('col-sm-offset-8');
-                this.createNewElement(parentBlock[0], 'input', 'btn btn-primary', '', '', 'type', loginData[i].type, loginData[i].value);
+                this.createNewElement(div, 'div', 'col-md-12 center-block button-block', '', '', '', '', '');
+                var parentBlock = document.getElementsByClassName('button-block');
+                this.createNewElement(parentBlock[0], 'input', 'btn btn-primary center-block', '', '', 'type', loginData[i].type, loginData[i].value);
 
             } else if (loginData[i].type == 'checkbox') {
 
