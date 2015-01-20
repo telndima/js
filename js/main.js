@@ -1,6 +1,6 @@
 var app = {
     init: function () {
-        this.testForm();
+        this.loginForm();
     },
 
     loginForm: function () {
@@ -139,7 +139,7 @@ var app = {
 
     checkTest: function (event) {
         event.preventDefault();
-        var result = {success:0,danger:0};
+        var result = {success:0,danger:0,warning:0};
 
         for (var i = 0; i < loginData.length - 1; i++) {
 
@@ -156,10 +156,10 @@ var app = {
 
             if(checkboxesChecked.length == 0){
                 parentBlock.setAttribute('class', 'panel panel-warning question-' + (i + 1));
-                result.warning = 1;
+                result.warning++;
             } else {
                 //check if true answers - is array
-                result.warning = 0;
+                
                 
                 if (loginData[i].data instanceof Array) {
                     //few answers
@@ -229,15 +229,15 @@ var app = {
 
 
         }
-        console.log(result.warning);
+        console.log(result.warning+" "+(loginData.length - 1));
         var messageBlock = document.querySelector('.message');
-        if(result.warning == 1){
-            messageBlock.setAttribute('class', 'message alert alert-warning');
-            message = "Пожалуйста, выберите варианты ответов";
-            messageBlock.innerHTML = message;
-        } else {
+        if(result.warning == 0){
             messageBlock.setAttribute('class', 'message alert alert-info');
             var message = 'Ваш результат: Ошибок: '+result.danger+'. Правильных ответов: '+result.success;
+            messageBlock.innerHTML = message;
+        } else {
+            messageBlock.setAttribute('class', 'message alert alert-warning');
+            message = "Пожалуйста, выберите варианты ответов";
             messageBlock.innerHTML = message;
         }
         
