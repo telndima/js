@@ -1,3 +1,14 @@
-.container{
-	padding-top: 50px;
+.start{
+	float: left;
+	display: block;
+	border: 20px solid transparent;
+	border-left: 20px solid green;
+}
+
+.stop{
+	float: left;
+	display: block;	
+	width: 40px;
+	height: 40px;
+	background-color: red;
 }
